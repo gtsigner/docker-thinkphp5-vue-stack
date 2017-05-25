@@ -1,6 +1,6 @@
 ##docker-compose的lnmp环境编排实战
 
-##来自快递到家开源项目的lnmp环境
+##开发+线上环境
 
 环境： Redis3.1+PHP5.6-fpm+Nginx+Mysql5.7
 
@@ -45,4 +45,6 @@ e_v1</data/backup/data-default.sql'
 
 ##开发
 
-项目入口文件放到app/webroot/Public/下
+
+
+##MIT
