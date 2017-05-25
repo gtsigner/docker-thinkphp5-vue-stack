@@ -1,0 +1,81 @@
+#upstream php {
+#        server php-fpm:9000;
+#}
+
+##WebFont
+upstream FontServer {
+        server webpack-dev-font:8080;
+}
+server {
+        listen 80;
+        server_name www.dockerchina.dist;
+        root /var/www/html/WebFont/dist/;
+        index index.html;
+        location / {
+               #默认访问前台html
+               index  index.html;
+               proxy_pass http://FontServer;
+               proxy_set_header Host      $host;
+               proxy_set_header X-Real-IP $remote_addr;
+        }
+
+        location ~* \.(js|css|png|jpg|jpeg|gif|ico)$ {
+               expires 0;
+               log_not_found on;
+        }
+}
+
+
+##WebAdmin
+upstream AdminServer {
+        server webpack-dev-admin:8080;
+}
+server {
+        listen 80;
+        server_name admin.dockerchina.dist;
+        root /var/www/html/WebAdmin/dist/;
+        index index.html;
+        location / {
+               #默认访问前台html
+               index  index.html;
+               proxy_pass http://AdminServer;
+               proxy_set_header Host      $host;
+               proxy_set_header X-Real-IP $remote_addr;
+        }
+        location ~* \.(js|css|png|jpg|jpeg|gif|ico)$ {
+               expires 0;
+#            log_not_found on;
+        }
+}
+
+##ApiServer
+server {
+        listen 80 api.dockerchina.dist;
+        root /var/www/html/WebApiServer/public;
+        index index.html index.php api.php;
+        location / {
+               #默认访问前台html
+               index  index.html index.php api.php;
+               #autoindex  on;
+               if (!-e $request_filename) {
+               #重写路由,去掉前缀
+                  rewrite ^/(.*)$ /index.php/$1 last;
+                  break;
+               }
+        }
+
+        location ~ \.php$ {
+            fastcgi_pass php-fpm:9000;
+            fastcgi_index  index.php;
+            fastcgi_split_path_info  ^((?U).+\.php)(/?.+)$;
+            fastcgi_param  SCRIPT_FILENAME  $document_root$fastcgi_script_name;
+            fastcgi_param  PATH_INFO  $fastcgi_path_info;
+            fastcgi_param  PATH_TRANSLATED  $document_root$fastcgi_path_info;
+            include        fastcgi_params;
+        }
+
+        location ~* \.(js|css|png|jpg|jpeg|gif|ico)$ {
+            expires 0;
+            log_not_found on;
+        }
+}
