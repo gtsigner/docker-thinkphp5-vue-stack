@@ -1,17 +1,17 @@
-##docker-compose的lnmp环境编排实战
+## docker-compose的lnmp环境编排实战
 
-##开发+线上环境
+## 开发+线上环境
 
 环境： Redis3.1+PHP5.6-fpm+Nginx+Mysql5.7
 
-##Copyright@   Godtoy
+## Copyright@   Godtoy
 
-##Usage
+## Usage
 1.git clone .
 
 2.docker-compose up --build
 
-##第一次需要手动导入测试数据
+## 第一次需要手动导入测试数据
 
 
 
@@ -43,8 +43,8 @@ e_v1</data/backup/data-default.sql'
 
 
 
-##开发
+## 开发
 
 
 
-##MIT
+## LICENSE
